@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
-	"rsc.io/quote"
 )
 
 type Blockchain struct {
@@ -44,5 +43,15 @@ func InitBlockchain() *Blockchain {
 }
 
 func main() {
-	fmt.Println(quote.Hello())
+	chain := InitBlockchain()
+
+	chain.AddBlock("First Block after Genesis")
+	chain.AddBlock("Second Block after Genesis")
+	chain.AddBlock("Third Block after Genesis")
+
+	for _, block := range chain.blocks {
+		fmt.Printf("Previous Hash: %x\n", block.PrevHash)
+		fmt.Printf("Data in Block: %s\n", block.Data)
+		fmt.Printf("Hash: %x\n", block.Hash)
+	}
 }
