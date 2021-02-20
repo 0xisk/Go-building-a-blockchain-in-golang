@@ -23,10 +23,16 @@ func (b *Block) DeriveHash() {
 	b.Hash = hash[:]
 }
 
-func createBlock(data string, prevHash []byte) *Block {
+func CreateBlock(data string, prevHash []byte) *Block {
 	block := &Block{[]byte{}, []byte(data), prevHash}
 	block.DeriveHash();
 	return block
+}
+
+func (chain *Blockchain) AddBlock(data string) {
+	prevBlock := chain.blocks[len(chain.blocks) - 1]
+	new := CreateBlock(data, prevBlock.Hash)
+	chain.blocks = append(chain.blocks, new)
 }
 
 func main() {
