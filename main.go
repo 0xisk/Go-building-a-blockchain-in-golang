@@ -35,6 +35,10 @@ func (chain *Blockchain) AddBlock(data string) {
 	chain.blocks = append(chain.blocks, new)
 }
 
+func Genesis() *Block {
+	return CreateBlock("Genesis", []byte{})
+}
+
 func main() {
 	fmt.Println(quote.Hello())
 }
