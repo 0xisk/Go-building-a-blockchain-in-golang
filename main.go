@@ -39,6 +39,10 @@ func Genesis() *Block {
 	return CreateBlock("Genesis", []byte{})
 }
 
+func InitBlockchain() *Blockchain {
+	return &Blockchain{[]*Block{Genesis()}}
+}
+
 func main() {
 	fmt.Println(quote.Hello())
 }
