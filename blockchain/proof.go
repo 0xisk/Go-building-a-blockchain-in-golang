@@ -70,11 +70,10 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		} else {
 			nonce++
 		}
-
-		fmt.Println()
-
-		return nonce, hash[:]
 	}
+	fmt.Println()
+	
+	return nonce, hash[:]
 }
 
 func ToHex(num int64) []byte {
