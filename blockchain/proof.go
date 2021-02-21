@@ -17,3 +17,15 @@ type ProofOfWork struct {
 	Block  *Block
 	Target *big.Int
 }
+
+func NewProof(b *Block) *ProofOfWork {
+	target := big.NewInt(1)
+	target.Lsh(target, uint(256 - Difficulty))
+
+	pow := &ProofOfWork{
+		Block:  b,
+		Target: target,
+	}
+
+	return pow
+}
