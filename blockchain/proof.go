@@ -12,7 +12,7 @@ import (
 
 /*
 - Take the data from the block
-- Create a counter (nonce) which starts at 0
+- Create a counter (Nonce) which starts at 0
 - Create the hash of the data plus the counter
 - Check the hash to see if it meets a set of requirements
 	- Requirements:
@@ -72,8 +72,19 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		}
 	}
 	fmt.Println()
-	
+
 	return nonce, hash[:]
+}
+
+func (pow *ProofOfWork) Validate() bool {
+	var intHash big.Int
+
+	data := pow.InitData(pow.Block.Nonce)
+
+	hash := sha256.Sum256(data)
+	intHash.SetBytes(hash[:])
+
+	return intHash.Cmp(pow.Target) == -1
 }
 
 func ToHex(num int64) []byte {
