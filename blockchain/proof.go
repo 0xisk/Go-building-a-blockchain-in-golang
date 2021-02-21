@@ -1,6 +1,11 @@
 package blockchain
 
-import "math/big"
+import (
+	"bytes"
+	"encoding/binary"
+	"log"
+	"math/big"
+)
 
 /*
 - Take the data from the block
@@ -28,4 +33,28 @@ func NewProof(b *Block) *ProofOfWork {
 	}
 
 	return pow
+}
+
+func (pow *ProofOfWork) InitData(nonce int) []byte{
+	data := bytes.Join(
+			[][]byte{
+				pow.Block.PrevHash,
+				pow.Block.Data,
+				ToHex(int64(nonce)),
+				ToHex(int64(Difficulty)),
+			},
+			[]byte{},
+		)
+
+	return data
+}
+
+func ToHex(num int64) []byte {
+	buff := new(bytes.Buffer)
+	err := binary.Write(buff, binary.BigEndian, num)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return buff.Bytes()
 }
