@@ -41,9 +41,7 @@ func (b *Block) Serialize() []byte {
 
 	err := encoder.Encode(b)
 
-	if err != nil {
-		log.Panic(err)
-	}
+	Handler(err)
 
 	return res.Bytes()
 }
@@ -55,9 +53,13 @@ func Deserialize(data []byte) *Block {
 
 	err := decoder.Decode(&block)
 
+	Handler(err)
+
+	return &block
+}
+
+func Handler(err error)  {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	return &block
 }
