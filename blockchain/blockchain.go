@@ -4,6 +4,10 @@ import (
 	"github.com/dgraph-io/badger"
 )
 
+const (
+	dbPath = "./tmp/blocks"
+)
+
 type Blockchain struct {
 	LastHash []byte
 	Database *badger.DB
