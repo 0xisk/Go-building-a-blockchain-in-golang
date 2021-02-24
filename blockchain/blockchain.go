@@ -1,7 +1,12 @@
 package blockchain
 
+import (
+	"github.com/dgraph-io/badger"
+)
+
 type Blockchain struct {
-	Blocks []*Block
+	LastHash []byte
+	Database *badger.DB
 }
 
 func (chain *Blockchain) AddBlock(data string) {
