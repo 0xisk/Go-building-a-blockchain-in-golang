@@ -26,6 +26,11 @@ func (cli *CommandLine) validateArgs() {
 	}
 }
 
+func (cli *CommandLine) addBlock(data string) {
+	cli.blockchain.AddBlock(data)
+	fmt.Println("Added Block!")
+}
+
 func main() {
 	chain := blockchain.InitBlockchain()
 
