@@ -11,6 +11,12 @@ type CommandLine struct {
 	blockchain *blockchain.Blockchain
 }
 
+func (cli *CommandLine) PrintUsage() {
+	fmt.Println("Usage:")
+	fmt.Println(" add -block BLOCK_DATA - add a block to the blockchain")
+	fmt.Println(" print - Prints the blocks in the chain")
+}
+
 func main() {
 	chain := blockchain.InitBlockchain()
 
