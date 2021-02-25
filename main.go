@@ -31,6 +31,26 @@ func (cli *CommandLine) addBlock(data string) {
 	fmt.Println("Added Block!")
 }
 
+func (cli *CommandLine) printChain() {
+	iter := cli.blockchain.Iterator()
+
+	for  {
+		block := iter.Next()
+
+		fmt.Printf("Previous Hash: %x\n", block.PrevHash)
+		fmt.Printf("Data in Block: %s\n", block.Data)
+		fmt.Printf("Hash: %x\n", block.Hash)
+
+		pow := blockchain.NewProof(block)
+		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
+		fmt.Println()
+
+		if len(block.PrevHash) == 0 {
+			break
+		}
+	}
+}
+
 func main() {
 	chain := blockchain.InitBlockchain()
 
@@ -39,12 +59,6 @@ func main() {
 	chain.AddBlock("Third Block after Genesis")
 
 	for _, block := range chain.Blocks {
-		fmt.Printf("Previous Hash: %x\n", block.PrevHash)
-		fmt.Printf("Data in Block: %s\n", block.Data)
-		fmt.Printf("Hash: %x\n", block.Hash)
 
-		pow := blockchain.NewProof(block)
-		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
-		fmt.Println()
 	}
 }
