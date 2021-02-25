@@ -93,3 +93,23 @@ func (chain *Blockchain) Iterator() *BlockchainIterator {
 
 	return iter
 }
+
+func (iter *BlockchainIterator) Next() *Block {
+	var block *Block
+
+	err := iter.Database.View(func(txn *badger.Txn) error {
+		item, err := txn.Get(iter.currentHash)
+		Handler(err)
+		err = item.Value(func(val []byte) error {
+			block = Deserialize(val)
+			return err
+		})
+
+		return err
+	})
+	Handler(err)
+
+	iter.currentHash = block.PrevHash
+
+	return block
+}
