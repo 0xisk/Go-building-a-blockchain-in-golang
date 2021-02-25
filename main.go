@@ -7,6 +7,10 @@ import (
 	"github.com/iskanderandrews/practicing-golang-blockchain/blockchain"
 )
 
+type CommandLine struct {
+	blockchain *blockchain.Blockchain
+}
+
 func main() {
 	chain := blockchain.InitBlockchain()
 
