@@ -14,6 +14,11 @@ type Blockchain struct {
 	Database *badger.DB
 }
 
+type BlockchainIterator struct {
+	currentHash []byte
+	Database *badger.DB
+}
+
 func (chain *Blockchain) AddBlock(data string) {
 	var lastHash []byte
 
