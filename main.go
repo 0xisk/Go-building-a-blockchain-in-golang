@@ -87,13 +87,10 @@ func (cli *CommandLine) run() {
 }
 
 func main() {
+	defer os.Exit(0)
 	chain := blockchain.InitBlockchain()
+	defer chain.Database.Close()
 
-	chain.AddBlock("First Block after Genesis")
-	chain.AddBlock("Second Block after Genesis")
-	chain.AddBlock("Third Block after Genesis")
-
-	for _, block := range chain.Blocks {
-
-	}
+	cli := CommandLine{chain}
+	cli.run()
 }
