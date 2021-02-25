@@ -88,3 +88,8 @@ func InitBlockchain() *Blockchain {
 	return &blockchain
 }
 
+func (chain *Blockchain) Iterator() *BlockchainIterator {
+	iter := &BlockchainIterator{chain.LastHash, chain.Database}
+
+	return iter
+}
