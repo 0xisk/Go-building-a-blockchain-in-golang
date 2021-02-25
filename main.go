@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"runtime"
 	"strconv"
 
 	"github.com/iskanderandrews/practicing-golang-blockchain/blockchain"
@@ -11,10 +13,17 @@ type CommandLine struct {
 	blockchain *blockchain.Blockchain
 }
 
-func (cli *CommandLine) PrintUsage() {
+func (cli *CommandLine) printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println(" add -block BLOCK_DATA - add a block to the blockchain")
 	fmt.Println(" print - Prints the blocks in the chain")
+}
+
+func (cli *CommandLine) validateArgs() {
+	if len(os.Args) < 2 {
+		cli.printUsage()
+		runtime.Goexit()
+	}
 }
 
 func main() {
