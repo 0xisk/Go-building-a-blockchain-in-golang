@@ -1,6 +1,11 @@
 package blockchain
 
-import "fmt"
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/gob"
+	"fmt"
+)
 
 type Transaction struct {
 	ID      []byte
@@ -17,6 +22,18 @@ type TxInput struct {
 	ID  []byte
 	Out int
 	Sig string
+}
+
+func (tx *Transaction) SetID() {
+	var encoded bytes.Buffer
+	var hash [32]byte
+
+	encode := gob.NewEncoder(&encoded)
+	err := encode.Encode(tx)
+	Handler(err)
+
+	hash = sha256.Sum256(encoded.Bytes())
+	tx.ID = hash[:]
 }
 
 func CoinbaseTx(to, data string) *Transaction {
