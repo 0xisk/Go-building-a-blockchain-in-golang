@@ -3,6 +3,7 @@ package blockchain
 import (
 	"fmt"
 	"github.com/dgraph-io/badger"
+	"os"
 )
 
 const (
@@ -49,6 +50,14 @@ func (chain *Blockchain) AddBlock(data string) {
 		return err
 	})
 	Handler(err)
+}
+
+func DBexists() bool {
+	if _, err := os.Stat(dbFile); os.IsNotExist(err){
+		return false
+	}
+
+	return true
 }
 
 func InitBlockchain() *Blockchain {
