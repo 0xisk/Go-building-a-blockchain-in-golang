@@ -94,6 +94,38 @@ func InitBlockchain(address string) *Blockchain {
 	return &blockchain
 }
 
+func ContinueBlockchain(address string) *Blockchain {
+	var lastHash []byte
+
+	if DBexists() == false {
+		fmt.Println("No existing blockchain found, create one!")
+		runtime.Goexit()
+	}
+
+	opts := badger.DefaultOptions(dbPath)
+	opts.Dir = dbPath
+	opts.ValueDir = dbPath
+
+	db, err := badger.Open(opts)
+	Handler(err)
+
+	err = db.Update(func(txn *badger.Txn) error {
+		item, err := txn.Get([]byte("lh"))
+		Handler(err)
+		err = item.Value(func(val []byte) error {
+			lastHash = val
+			return err
+		})
+
+		return err
+	})
+	Handler(err)
+
+	chain := Blockchain{lastHash, db}
+
+	return &chain
+}
+
 func (chain *Blockchain) Iterator() *BlockchainIterator {
 	iter := &BlockchainIterator{chain.LastHash, chain.Database}
 
