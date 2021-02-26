@@ -8,7 +8,7 @@ import (
 
 type Block struct {
 	Hash     []byte
-	Data     []byte
+	Transactions []*Transaction
 	PrevHash []byte
 	Nonce    int
 }
