@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dgraph-io/badger"
 	"os"
+	"runtime"
 )
 
 const (
@@ -60,8 +61,13 @@ func DBexists() bool {
 	return true
 }
 
-func InitBlockchain() *Blockchain {
+func InitBlockchain(address string) *Blockchain {
 	var lastHash []byte
+
+	if DBexists() {
+		fmt.Println("Blockchain already exists")
+		runtime.Goexit()
+	}
 
 	opts := badger.DefaultOptions(dbPath)
 	opts.Dir = dbPath
@@ -71,27 +77,16 @@ func InitBlockchain() *Blockchain {
 	Handler(err)
 
 	err = db.Update(func(txn *badger.Txn) error {
-		if _, err := txn.Get([]byte("lh")); err == badger.ErrKeyNotFound {
-			fmt.Println("No existing blockchain found")
-			genesis := Genesis()
-			fmt.Println("Genesis proved")
-			err = txn.Set(genesis.Hash, genesis.Serialize())
-			Handler(err)
-			err = txn.Set([]byte("lh"), genesis.Hash)
+		cbtx := CoinbaseTx(address, genesisData)
+		genesis := Genesis(cbtx)
+		fmt.Println("Genesis Created")
+		err = txn.Set(genesis.Hash, genesis.Serialize())
+		Handler(err)
+		err = txn.Set([]byte("lh"), genesis.Hash)
 
-			lastHash = genesis.Hash
+		lastHash = genesis.Hash
 
-			return err
-		} else {
-			item, err := txn.Get([]byte("lh"))
-			Handler(err)
-			err = item.Value(func(val []byte) error {
-				lastHash = val
-
-				return err
-			})
-			return err
-		}
+		return err
 	})
 	Handler(err)
 
