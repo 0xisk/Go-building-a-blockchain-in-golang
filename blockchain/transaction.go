@@ -49,3 +49,7 @@ func CoinbaseTx(to, data string) *Transaction {
 
 	return &tx
 }
+
+func (tx *Transaction) IsCoinbase() bool {
+	return len(tx.Inputs) == 1 && len(tx.Inputs[0].ID) == 0 && tx.Inputs[0].Out == -1
+}
