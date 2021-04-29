@@ -1,4 +1,4 @@
-# practicing GoLang Blockchain
+# Go: Building a Blockchain in Golang
 Practicing implementing a GoLang simple Blockchain network
 
 <p align='center'>
